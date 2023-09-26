@@ -23,3 +23,5 @@ setInterval(() => {
     firstArticles.forEach(article => article.style.display = 'block');
   }, 5000);
 }, 10000);
+
+

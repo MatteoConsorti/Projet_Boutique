@@ -3,14 +3,59 @@
 <head>
     <script></script>
     <meta charset="UTF-8">
-    <title>Adidas</title>
+    <title>GemsPhones</title>
     <link rel="stylesheet" href="accueil.css">
+    
 </head>
 <body>
 
 <?php include "../header/header.html";?>
+<div class='information-container'>
+  <div class='inner-container'>
+    <h1 class='section-title'>Information</h1>
+    <div class='border'></div>
+      <div class='service-container'>
+        
+       
+        
+        <div class='service-box'>
+          <div class='service-icon'>
+            <i class='fa fa-code'></i>
+          </div>
+          <div class='service-title'>GemsPhones</div>
+          <div class='description'>
+           GemsPhones c'est la référence des sites de reventes de téléphones. Avec nous, vous êtes certains de faire bonne affaire, tout en conservant votre porte monnaie. 
+           N'hésitez plus un instant et charger votre panier
+          </div>
+        </div>
 
+        <div class='service-box'>
+          <div class='service-icon'>
+            <i class='fa fa-paint-brush'></i>
+          </div>
+          <div class='service-title'>Catalogue de produits</div>
+          <div class='description'>
+            GemsPhones contient les meilleurs offres du marché en terme de prix avec une selection des meilleures marques. Soyez sur de retrouver votre téléphone du moment chez GemsPhones
+          </div>
+        </div>
+        
+        <div class='service-box'>
+          <div class='service-icon'>
+            <i class='fa fa-cut'></i>
+          </div>
+          <div class='service-title'>Ecoresponsable</div>
+          <div class='description'>
+            GemsPhones s'engage a planter un arbre à chaque achat d'un téléphone. Nous essayons tout comme vous à penser à notre planète.
+          </div>
+        </div>
+
+        
+      </div>
+    </div>
+  </div>
 <main>
+
+
     <section class="promotions">
         <h2>Promotions</h2>
         <div class="article">
@@ -43,7 +88,8 @@
 	</body>
     <footer>
              <script src="script.js"></script> 
-              <?php include "../footer/footer.html";?>
+              
 		
 	</footer>
+    <?php include "../footer/footer.html";?>
 </html>
