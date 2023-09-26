@@ -6,8 +6,8 @@ body {
 }
 
 header {
-    background-color: #333;
-    color: #fff;
+    background-color: #ffffff;
+    color: #ffffff;
     text-align: center;
     padding: 20px 0;
 }
@@ -17,11 +17,15 @@ main {
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(110, 110, 110, 0.1);
 }
 
 h1 {
-    color: #333;
+    color: #000000;
+}
+
+h2 .h2_detail {
+    text-align: center;
 }
 
 ul {
@@ -52,10 +56,17 @@ img {
 .Produit ul {
     list-style: none;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .Produit li {
-    margin: 10px; 
+    flex-basis: calc(50% - 10px); /* 50% de largeur avec un espace de 10px entre les colonnes */
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
 }
 
 .detail_produit img {
@@ -65,13 +76,22 @@ img {
     display: block; /* Assurez-vous que l'image est un bloc pour appliquer les marges automatiques */
 }
 
+.description_generale {
+    vertical-align: bottom;
+}
 
-.description_produit{
+.description_produit {
+    text-align: left;
+    justify-items: flex-end;
+}
+
+.description_detail_produit{
     border: 1.5px solid rgba(0, 0, 0, 0.178);
     padding: 10px;
 }
 
-img {
+/* Animation de survol d'image */
+.image_produit {
     max-width: 200px;
     height: auto;
     transition: transform 0.2s ease-in-out;
@@ -80,6 +100,13 @@ img {
 .image_produit:hover {
     transform: scale(1.1); 
 }
+
+.Produit li:hover {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
 
 .Produit li:hover {
     opacity: 1;
