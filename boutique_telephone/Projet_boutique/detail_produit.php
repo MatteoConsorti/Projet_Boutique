@@ -38,25 +38,32 @@ if (isset($_GET['id_produit'])) {
     <link href="Boutique.css" rel="stylesheet">
 </head>
 <body>
+
+<?php include 'header.html'; ?> <!-- Inclure le header -->
+
 <main>
     <header>
-        <h1><?= $nom_produit ?></h1>
+        <h2 class="h2_detail"><?= $nom_produit ?></h2>
     </header>
     <div class="detail_produit">
-        <h2><?= $row['NOM_PRODUIT'] ?></h2>
+        <h1 class="h1_detail"><?= $row['NOM_PRODUIT'] ?></h1>
         <img class="image_detail" src="<?= $url_image ?>" alt="<?= $nom_produit ?>">
-        <div class="description_produit">
-        <p>Description : <?= $description_produit ?></p>
-        <p>Prix : $<?= $prix_produit ?></p>
-        <p>Stock : <?= $stock_produit ?></p>
-        <p>Marque : <?= $marque_tel ?></p>
-        <p>Caractéristique : <?= $caracteristique_tel ?></p>
+        <div class="description_detail_produit">
+        <p><u>Description</u> : <?= $description_produit ?></p>
+        <p><u>Prix</u> : <?= $prix_produit ?> €</p>
+        <p><u>Stock</u> : <?= $stock_produit ?></p>
+        <p><u>Marque</u> : <?= $marque_tel ?></p>
+        <p><u>Caractéristique</u> : <?= $caracteristique_tel ?></p>
         </div>
     </div>
 </main>
+
+<?php include 'footer.html'; ?> <!-- Inclure le footer -->
+
 </body>
 </html>
 
 <?php
 $pdo = null;
 ?>
+
