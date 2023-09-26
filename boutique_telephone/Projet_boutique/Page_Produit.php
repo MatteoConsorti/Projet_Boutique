@@ -2,66 +2,68 @@
 // Connexion à la base de données
 $pdo = new PDO('mysql:host=localhost;dbname=boutique_tel', 'root', '');
 
-$triPrix = isset($_GET['triPrix']) ? $_GET['triPrix'] : 'croissant';
-$triMarque = isset($_GET['triMarque']) ? $_GET['triMarque'] : 'tous';
+if (isset($_GET['id_produit'])) {
+    // Récupère la valeur de 'id_produit' depuis l'URL
+    $id_produit = $_GET['id_produit'];
+    
+    // Requête SQL pour sélectionner le produit avec l'ID correspondant
+    $query = "SELECT * FROM produit WHERE ID_PRODUIT = :id_produit";
+    $statement = $pdo->prepare($query);
+    $statement->bindParam(':id_produit', $id_produit);
+    $statement->execute();
 
-// Requête SQL pour récupérer les produits avec les filtres
-$query = "SELECT * FROM produit WHERE 1";
-
-// Appliquez le filtre de tri par prix
-if ($triPrix === 'croissant') {
-    $query .= " ORDER BY PRIX_PRODUIT ASC";
+    if ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+        $nom_produit = $row['NOM_PRODUIT'];
+        $description_produit = $row['DESCRIPTION_PRODUIT'];
+        $prix_produit = $row['PRIX_PRODUIT'];
+        $stock_produit = $row['STOCK_PRODUIT'];
+        $marque_tel = $row['MARQUE_TEL'];
+        $caracteristique_tel = $row['CARACTERISTIQUE_TEL'];
+        $url_image = $row['URL_IMAGE'];
+    } else {
+        header('Location: liste_produits.php');
+        exit();
+    }
 } else {
-    $query .= " ORDER BY PRIX_PRODUIT DESC";
+    header('Location: liste_produits.php');
+    exit();
 }
-
-$statement = $pdo->prepare($query);
-$statement->execute();
 ?>
 
-<!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Nos Produits</title>
+    <title><?= $nom_produit ?></title>
     <link href="Boutique.css" rel="stylesheet">
 </head>
 <body>
+
+<?php include 'header.html'; ?> <!-- Inclure le header -->
+
 <main>
-    <form method="GET"> <!-- Ajout d'un formulaire pour les filtres -->
-        <header>
-            <label for="triPrix">Trier par prix :</label>
-            <select id="triPrix" name="triPrix"> 
-                <option value="croissant">Prix Croissant</option>
-                <option value="decroissant">Prix Décroissant</option>
-            </select>
-            <input type="submit" value="Appliquer">
-        </header>
-    </form> <!-- Fin du formulaire -->
-    <h1>Nos Produits</h1>
-    <div class="Produit">
-        <ul>
-            <?php while ($row = $statement->fetch(PDO::FETCH_ASSOC)): ?>
-                <li>
-                    <h2><?= $row['NOM_PRODUIT'] ?></h2>
-                    <!-- Lien vers la page de détail du produit avec l'ID du produit en paramètre -->
-                    <a href="detail_produit.php?id_produit=<?= $row['ID_PRODUIT'] ?>">
-                        <img class="image_produit" src="<?= $row['URL_IMAGE'] ?>" alt="Image du produit">
-                    </a>
-                    <p>Prix : $<?= $row['PRIX_PRODUIT'] ?></p>
-                    <p>Stock : <?= $row['STOCK_PRODUIT'] ?></p>
-                    <p>Marque : <?= $row['MARQUE_TEL'] ?></p>
-                    <p>Caractéristique : <?= $row['CARACTERISTIQUE_TEL'] ?></p>
-                </li>
-            <?php endwhile; ?>
-        </ul>
+    <header>
+        <h2 class="h2_detail"><?= $nom_produit ?></h2>
+    </header>
+    <div class="detail_produit">
+        <h1 class="h1_detail"><?= $row['NOM_PRODUIT'] ?></h1>
+        <img class="image_detail" src="<?= $url_image ?>" alt="<?= $nom_produit ?>">
+        <div class="description_detail_produit">
+        <p><u>Description</u> : <?= $description_produit ?></p>
+        <p><u>Prix</u> : <?= $prix_produit ?> €</p>
+        <p><u>Stock</u> : <?= $stock_produit ?></p>
+        <p><u>Marque</u> : <?= $marque_tel ?></p>
+        <p><u>Caractéristique</u> : <?= $caracteristique_tel ?></p>
+        </div>
     </div>
 </main>
+
+<?php include 'footer.html'; ?> <!-- Inclure le footer -->
+
 </body>
 </html>
 
 <?php
-// Fermeture de la connexion à la base de données
 $pdo = null;
 ?>
+
