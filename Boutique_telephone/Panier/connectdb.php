@@ -1,27 +1,15 @@
 <?php
-   
-    $servername = "localhost"; 
-    $username = "root"; 
+    $servername = "localhost";
+    $username = "root";
     $password = "";
-   
     $database = "boutique_telephone";
-   
-     // Create a connection 
-     $conn = mysqli_connect($servername, 
-         $username, $password, $database);
-   
-    // Code written below is a step taken
-    // to check that our Database is 
-    // connected properly or not. If our 
-    // Database is properly connected we
-    // can remove this part from the code 
-    // or we can simply make it a comment 
-    // for future reference.
-   
-    if($conn) {
-        echo "success"; 
-    } 
-    else {
-        die("Error". mysqli_connect_error()); 
-    } 
+
+    try {
+        // Create a PDO connection
+        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        echo "Success";
+    } catch (PDOException $e) {
+        die("Error: " . $e->getMessage());
+    }
 ?>

@@ -1,15 +1,17 @@
 <?php 
-   session_start();
-   $pdo = new PDO('mysql:host=localhost;dbname=boutique_telephone', 'root', '');
-   include_once "index.php";
+session_start();
+$pdo = new PDO('mysql:host=localhost;dbname=boutique_telephone', 'root', '');
+include "../header/header.html";
+include_once "index.php";
 
-   //supprimer les produits
-   //si la variable del existe
-   if(isset($_GET['del'])){
+
+// Supprimer les produits
+// Si la variable del existe
+if(isset($_GET['del'])){
     $id_del = $_GET['del'] ;
-    //suppression
+    // Suppression
     unset($_SESSION['panier'][$id_del]);
-   }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,21 +34,23 @@
                 <th>Action</th>
             </tr>
             <?php 
-              $total = 0 ;
-              // liste des produits
-              //récupérer les clés du tableau session
-              $ids = array_keys($_SESSION['panier']);
-              //s'il n'y a aucune clé dans le tableau
-              if(empty($ids)){
+            $total = 0 ;
+            // Liste des produits
+            // Récupérer les clés du tableau session
+            $ids = array_keys($_SESSION['panier']);
+            // S'il n'y a aucune clé dans le tableau
+            if(empty($ids)){
                 echo "Votre panier est vide";
-              }else {
-                //si oui 
-                $products = mysqli_query($con, "SELECT * FROM products WHERE id IN (".implode(',', $ids).")");
+            }else {
+                // Si oui 
+                $stmt = $pdo->prepare("SELECT * FROM products WHERE id IN (" . implode(',', $ids) . ")");
+                $stmt->execute();
+                $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                //lise des produit avec une boucle foreach
+                // Liste des produits avec une boucle foreach
                 foreach($products as $product):
-                    //calculer le total ( prix unitaire * quantité) 
-                    //et aditionner chaque résutats a chaque tour de boucle
+                    // Calculer le total (prix unitaire * quantité) 
+                    // Et additionner chaque résultat à chaque tour de boucle
                     $total = $total + $product['price'] * $_SESSION['panier'][$product['id']] ;
                 ?>
                 <tr>
@@ -63,7 +67,6 @@
                 <th>Total : <?=$total?>€</th>
             </tr>
              
-  </div>
         </table><br><br>
         <a href="compte.php" class="link">Procédez au paiement !</a>
     </section>
