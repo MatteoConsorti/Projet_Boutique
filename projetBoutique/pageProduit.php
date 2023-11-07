@@ -33,7 +33,11 @@ if (isset($_GET['id'])) {
         echo '<div class="img"><img src="' . $produit['image'] . '"/></div>';
         echo '<p>Prix : ' . $produit['prix'] . '</p>';
         echo '<p>Description : ' . $produit['description'] . '</p>';
-        echo '<form action="testPanier.php" method="POST"><button name="bouton">Ajouter au panier</button></form>';
+        echo '<form action="testPanier.php" method="POST">';
+        echo '<input type="hidden" name="product_id" value="' . $produit['id_produit'] . '">';
+        echo 'Quantité : <input type="number" name="quantity" value="1" min="1">';
+        echo '<button type="submit" name="add_to_cart">Ajouter au panier</button>';
+        echo '</form>';
         echo '</div>';
         echo '</div>';
     } else {
@@ -47,12 +51,13 @@ if (isset($_GET['id'])) {
 $conn = null;
 ?>
 
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="pageProduit.css" />
-        <title>Lamazon produit</title>
-    </head>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="pageProduit.css" />
+    <title>Lamazon produit</title>
+</head>
 </html>
 
 <?php

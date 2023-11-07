@@ -1,11 +1,27 @@
 <?php
+
+
+session_start();
+
+
+
+
 include "header.php";
+/*
+echo '<pre>';
+var_dump($_POST);
+echo '</pre>';
+
+echo '<pre>';
+var_dump($_SESSION);
+echo '</pre>';
+*/
 
 // Informations de connexion à la base de données
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "btque";
+$dbname = "boutique";
 
 try {
     // Création d'une connexion PDO
@@ -16,27 +32,51 @@ try {
     die("La connexion à la base de données a échoué : " . $e->getMessage());
 }
 
-// Id de l'utilisateur à afficher
-$userId = 4000;
 
-try {
-    // Requête SQL pour récupérer les produits du panier de l'utilisateur
-    $sql = "SELECT produits.nom, produits.prix, contenue.quantité, (produits.prix * contenue.quantité) AS total FROM contenue 
-            JOIN produits ON contenue.produits_id = produits.id
-            WHERE contenue.clients_id = :userId";
+// Vérifiez si un produit a été ajouté au panier
+if (isset($_POST['add_to_cart'])) {
+    $product_id = $_POST['product_id'];
+    $quantity = $_POST['quantity'];
 
-    // Préparation de la requête
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+    // Vous devrez ajouter le code pour vérifier si le produit existe dans la base de données
+    // et récupérer ses détails (similaire à ce que vous avez fait dans "produit.php")
 
-    // Exécution de la requête
-    $stmt->execute();
+    // Ensuite, vous pouvez ajouter le produit au panier en utilisant des sessions
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = array();
+    }
 
-    // Récupération des résultats
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Erreur lors de la récupération des données : " . $e->getMessage());
+    // Si le produit est déjà dans le panier, mettez à jour la quantité
+    if (isset($_SESSION['cart'][$product_id])) {
+        $_SESSION['cart'][$product_id]['quantite'] += $quantity;
+    } else {
+        // Sinon, ajoutez-le au panier
+        $_SESSION['cart'][$product_id]['quantite'] = $quantity;
+        try {
+            // Requête SQL pour récupérer les produits du panier de l'utilisateur
+            $sql = "SELECT nom, prix FROM produits WHERE id_produit = :id";
+        
+            // Préparation de la requête
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $product_id, PDO::PARAM_INT);
+        
+            // Exécution de la requête
+            $stmt->execute();
+        
+            // Récupération des résultats
+           $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            var_dump( $result);
+            $_SESSION['cart'][$product_id]['nom'] = $result['nom'];
+            $_SESSION['cart'][$product_id]['prix'] = $result['prix'];
+
+
+        } catch (PDOException $e) {
+            die("Erreur lors de la récupération des données : " . $e->getMessage());
+        }
+    }
 }
+
 
 
 ?>
@@ -48,7 +88,6 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Panier</title>
     <link rel="stylesheet" href="testPanier.css">
-    
 </head>
 <body>
     <header>
@@ -67,12 +106,13 @@ try {
             <tbody>
                 <?php
                 // Affichage des données récupérées
-                foreach ($result as $row) {
+                foreach ($_SESSION['cart'] as $row) {
                     echo '<tr>';
                     echo '<td>' . $row['nom'] . '</td>';
                     echo '<td>' . $row['prix'] . ' €</td>';
-                    echo '<td>' . $row['quantité'] . '</td>';
-                    echo '<td>' . $row['total'] . ' €</td>';
+                    echo '<td>' . $row['quantite'] . '</td>';
+                    echo '<td>' . $row['prix'] * $row['quantite'] . ' €</td>';
+                    
                     echo '</tr>';
                 }
                 ?>
@@ -80,16 +120,19 @@ try {
         </table>
 
         <div class="total">
-            <p>Total du panier : <span><?php
-                // Calcul du total du panier
-                $totalPanier = 0;
-                foreach ($result as $row) {
-                    $totalPanier += $row['total'];
-                }
-                echo $totalPanier . ' €';
-                ?></span></p>
-            <a href="compte.php" target="_blank" rel="noopener noreferrer"><button>Passer la commande</button></a>
-        </div>
+    <p>Total du panier : <span><?php
+        // Calcul du total du panier
+        $totalPanier = 0;
+        foreach ($_SESSION['cart'] as $row) {
+            $totalPanier += $row['prix'] * $row['quantite'];
+        }
+        echo $totalPanier . ' €';
+        ?></span></p>
+              
+    <a href="../projetBoutique/Connexion/Inscription.php" target="_blank" rel="noopener noreferrer"><button>Passer la commande</button></a>
+    <a href="index.php" target="_blank" rel="noopener noreferrer"><button>Ajouter d'autres produits</button></a>
+</div>
+
     </main>
 </body>
 </html>
@@ -98,5 +141,4 @@ try {
 // Fermeture de la connexion PDO
 $conn = null;
 ?>
-
 <?php include "footer.php"; ?>
