@@ -1,0 +1,88 @@
+   /* haut de page */
+   
+   .menu {
+    display: block;
+    position: unset;
+    overflow: hidden;
+    background-color: #000000;
+  }
+
+  .compte {
+    margin-top: 5px;
+    margin-right: 5px;
+    color: #bdbdbd;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: center;
+    padding: 15px 25px;
+    text-decoration: none;
+    font-size: 17px;
+    float: right;
+  }
+
+  /* haut de page quand la souris passe dessus */
+  
+  .menu a:hover {
+    color: rgba(255, 136, 0, 0.973);
+  }
+
+  /* image logo */
+
+  .logo {
+    margin-left: 10px;
+    margin: 15px;
+    float: left;
+    height: 35px;
+  }
+
+  #recherche {
+    display:flex;
+    margin-left:28%;
+    margin-right: auto;
+    margin-top: 15px;
+  }
+  
+  input:focus::-webkit-input-placeholder {
+    color: transparent;
+  }
+  
+  input:focus:-moz-placeholder {
+    color: transparent;
+  }
+  
+  input:focus::-moz-placeholder {
+    color: transparent;
+  }
+  
+  #recherche input {
+    outline: none;
+  }
+
+  #recherche input[type="text"] {
+    background: url(http://2.bp.blogspot.com/-xpzxYc77ack/VDpdOE5tzMI/AAAAAAAAAeQ/TyXhIfEIUy4/s1600/search-dark.png) no-repeat 10px 6px #fff;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #fff;
+    font: bold 12px Arial,Helvetica,Sans-serif;
+    color: #bebebe;
+    width: 55%;
+    padding: 8px 15px 8px 30px;
+  }
+  
+  #bouton-submit {
+    background: #bdbdbd;
+    border-width: 0px;
+    padding: 9px 0px;
+    width: 10%;
+    cursor: pointer;
+    font: bold 12px Arial, Helvetica;
+    color: #fff;
+    text-shadow: 0 1px 0 #555;
+  }
+  
+  #bouton-submit:hover {
+    background: rgba(255, 136, 0, 0.973);
+  }
+  
+  #bouton-submit::-moz-focus-inner {
+    border: 0;
+  }
