@@ -1,0 +1,37 @@
+/* Styles pour le pied de page */
+footer {
+    color: white;
+    background-color: #000;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Permet aux éléments de passer à la ligne si nécessaire */
+}
+
+/* Styles pour les logos des réseaux sociaux */
+.footer-content {
+    color: w;
+    display: flex;
+    margin-right: 60%;
+    color: w;
+}
+
+.footer-content a {
+    margin: 0 15px;
+}
+
+.footer-content img {
+    width: 40px;
+   
+}
+
+/* Ajoutez une couleur de survol pour les logos */
+.footer-content a:hover img {
+    filter: brightness(120%);
+}
+
+/* Styles pour l'espace en hauteur */
+.spacer {
+    margin-top: 40px; /* Vous pouvez ajuster la valeur en pixels selon vos préférences */
+}
