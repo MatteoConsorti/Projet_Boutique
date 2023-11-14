@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </button>
        </div> ';
     }
-
+    include ('header.php')
     ?>
 
     <div style="border: solid 3px #00ced1; padding-bottom: 5%" class="container my-4 ">
@@ -140,11 +140,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 Valider !
             </button>
 
-            <button><a href="https://buy.stripe.com/00g9D17oB5AEcBq003">Paiement</a></button>
+            
         </form>
 
         <p style="padding-top: 3% "></p><button  style="margin-left: 40%" type="submit" class="btn btn-primary"><a href="connexion.php" style="color: white">
-                Vous avez déja un compte ?</a>
+                Vous avez déja un compte ? <br>Connectez-vous pour procédez au paiement</a>
             </button>
     </div>
 

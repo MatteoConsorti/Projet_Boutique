@@ -7,8 +7,8 @@
     </head>
     <body>
     <div class="menu">
-                <a href="index.php"><img class="logo" src="images/logo.jpg" alt="Logo"/></a>
-                <a href="Connexion/inscription.php" class="compte">Compte</a>
+                <a href="../index.php"><img class="logo" src="images/logo.jpg" alt="Logo"/></a>
+                <a href="inscription.php" class="compte">Compte</a>
                 <a href="testPanier.php" class="compte">Panier</a>
                 <form action="recherche.php" method="GET">
                     <label for="query">Recherche :</label>

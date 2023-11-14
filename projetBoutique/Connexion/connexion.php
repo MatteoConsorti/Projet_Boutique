@@ -32,8 +32,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["user_id"] = $user["id"];
             $_SESSION["user_username"] = $user["username"];
             // Ajoute ici la redirection vers la page de tableau de bord ou autre
-            echo 'Vous êtes connecté ';
-            exit();
+            echo 'Vous êtes connecté ';?>
+            <a href="../index.php"><button>Revenir à la page d'accueil</button></a>
+            <a href="https://buy.stripe.com/00g9D17oB5AEcBq003"><button>Procéder au paiement</button></a>
+        <?php   
         } else {
             $erreur = "Nom d'utilisateur ou mot de passe incorrect.";
         }
@@ -67,6 +69,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="password" name="password" required><br>
 
         <input type="submit" value="Se Connecter">
+        
+
     </form>
 </body>
 
