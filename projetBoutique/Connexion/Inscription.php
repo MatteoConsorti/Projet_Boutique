@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     ?>
 
-    <div class="container my-4 ">
+    <div style="border: solid 3px #00ced1; padding-bottom: 5%" class="container my-4 ">
 
         <h1 class="text-center">Inscrivez-Vous ici !</h1>
         <form action="Inscription.php" method="post">
@@ -142,6 +142,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <button><a href="https://buy.stripe.com/00g9D17oB5AEcBq003">Paiement</a></button>
         </form>
+
+        <p style="padding-top: 3% "></p><button  style="margin-left: 40%" type="submit" class="btn btn-primary"><a href="connexion.php" style="color: white">
+                Vous avez déja un compte ?</a>
+            </button>
     </div>
 
     <!-- Optional JavaScript -->
