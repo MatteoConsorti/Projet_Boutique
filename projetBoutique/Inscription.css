@@ -1,0 +1,20 @@
+#password-strength {
+    margin-top: 5px;
+    font-size: 14px;
+  }
+  
+  /* Couleur de la barre de progression pour un mot de passe faible */
+  .strength-1::-webkit-progress-value {
+    background-color: red;
+  }
+  
+  /* Couleur de la barre de progression pour un mot de passe moyen */
+  .strength-2::-webkit-progress-value {
+    background-color: rgb(255, 174, 0);
+  }
+  
+  /* Couleur de la barre de progression pour un mot de passe fort */
+  .strength-3::-webkit-progress-value {
+    background-color: green;
+  }
+  
