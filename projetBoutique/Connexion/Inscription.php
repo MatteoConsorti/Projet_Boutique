@@ -20,15 +20,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
     $cpassword = $_POST["cpassword"];
 
-    try {
-        // Requête SQL pour vérifier si le nom d'utilisateur existe déjà
-        $stmt = $conn->prepare("SELECT * FROM users WHERE username = :username");
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Vérification des critères du mot de passe
+    if (strlen($password) < 8) {
+        $showError = "Le mot de passe doit contenir au moins 8 caractères.";
+    } elseif (!preg_match("/[A-Z]/", $password)) {
+        $showError = "Le mot de passe doit contenir au moins une lettre majuscule.";
+    } elseif (!preg_match("/[0-9]/", $password)) {
+        $showError = "Le mot de passe doit contenir au moins un chiffre.";
+    } elseif ($password != $cpassword) {
+        $showError = "Les mots de passe ne correspondent pas.";
+    } else {
+        try {
+            // Requête SQL pour vérifier si le nom d'utilisateur existe déjà
+            $stmt = $conn->prepare("SELECT * FROM users WHERE username = :username");
+            $stmt->bindParam(':username', $username);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$result) {
-            if ($password == $cpassword && $exists == false) {
+            // ... (le reste de votre code pour vérifier l'existence de l'utilisateur)
+            
+            if (!$result) {
+                // Le mot de passe respecte les critères, procédez à l'insertion dans la base de données
                 $hash = password_hash($password, PASSWORD_DEFAULT);
 
                 // Requête SQL pour insérer un nouvel utilisateur
@@ -41,13 +53,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $showAlert = true;
                 }
             } else {
-                $showError = "Passwords do not match";
+                $exists = "Nom d'utilisateur non disponible";
             }
-        } else {
-            $exists = "Username not available";
+        } catch (PDOException $e) {
+            die("Erreur lors de l'exécution de la requête : " . $e->getMessage());
         }
-    } catch (PDOException $e) {
-        die("Erreur lors de l'exécution de la requête : " . $e->getMessage());
     }
 }
 ?>
@@ -57,13 +67,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 
 <head>
-
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="Inscription.css">
+ 
+    <!-- Ajoutez ici d'autres liens CSS ou scripts si nécessaire -->
 
 </head>
 
@@ -122,14 +135,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp">
             </div>
 
+
+
             <div class="form-group">
-                <label for="password">Mot de passe</label>
-                <input type="password" class="form-control" id="password" name="password">
-            </div>
+    <label for="password">Mot de passe</label>
+    <div class="input-group">
+        <input type="password" class="form-control" id="password" name="password">
+        <div class="input-group-append" style="margin-left:2%">
+            <img src="images/oeil.png" id="togglePassword" style="cursor: pointer; width: 30px; height: 40px;">
+        </div>
+    </div>
+    <progress id="password-strength" max="100" value="0"></progress>
+    <!-- Ajoutez l'élément p pour le commentaire de force du mot de passe ici -->
+    <p id="password-comment"></p>
+</div>
+
+
+
+
+
+
 
             <div class="form-group">
                 <label for="cpassword">Confirmez le mot de passe</label>
-                <input type="password" class="form-control" id="cpassword" name="cpassword">
+                <input type="password" class="form-control" id="cpassword" name="cpassword" >
 
                 <small id="emailHelp" class="form-text text-muted">
                     ⚠ Soyez attentif à utiliser les 2 mêmes mots de passe
@@ -148,16 +177,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </button>
     </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
+<!-- Votre fichier JavaScript pour la manipulation du DOM -->
+<script src="Inscription.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-    </script>
+<!-- Votre script utilisant le DOM -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
-    </script>
+        togglePassword.addEventListener('click', function(e) {
+            // Votre logique pour basculer entre le type de champ de mot de passe
+            // ...
+        });
+    });
+</script>
 </body>
 </html>
